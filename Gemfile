@@ -21,7 +21,7 @@ gem 'sdoc',                 '0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  gem 'pg'
+  gem 'sqlite3',     '1.3.9'
   gem 'byebug',      '3.4.0'
   gem 'spring',      '1.1.3'
 end
