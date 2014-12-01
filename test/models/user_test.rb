@@ -43,18 +43,25 @@ class UserTest < ActiveSupport::TestCase
 
   test "email validation should reject invalid addresses" do
     invalid_addresses = %w[user@example,com user_at_foo.org user.name@example.
-                           foo@bar_baz.com foo@bar+baz.com]
+                           foo@bar_baz.com foo@bar+baz.com foo@bar..com]
     invalid_addresses.each do |invalid_address|
       @user1.email = invalid_address
       assert_not @user1.valid?, "#{invalid_address.inspect} should be invalid"
     end
   end
   # Validating the uniqueness of email addresses, ignoring case.
-  test "email addresses should be unique" do
+  test "email addresses should be unique" do #case-insensitive (foobar@email.com = FOOBAR@email.com)
     duplicate_user = @user1.dup
     duplicate_user.email = @user1.email.upcase
     @user1.save
     assert_not duplicate_user.valid?
+  end
+
+  test "email addresses should be saved as lower-case" do
+    mixed_case_email = "Foo@ExAMPle.CoM"
+    @user1.email = mixed_case_email
+    @user1.save
+    assert_equal mixed_case_email.downcase, @user1.reload.email
   end
 
   #test password length
