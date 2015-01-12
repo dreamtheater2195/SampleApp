@@ -29,7 +29,7 @@ gem 'bcrypt', '~> 3.1.7'
 # Use unicorn as the app server
 # gem 'unicorn'
 group :development, :test do
-  gem 'sqlite3'
+  gem 'sqlite3', '1.3.10'
   gem 'byebug'
   gem 'spring'
 end
