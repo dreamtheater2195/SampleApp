@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :microposts, dependent: :destroy
   attr_accessor :remember_token
   before_save { email.downcase! }
   validates :name,  presence: true, length: { maximum: 50 }
@@ -16,7 +17,7 @@ class User < ActiveRecord::Base
     BCrypt::Password.create(string, cost: cost)
   end
 
-  # Returns a random token.
+   # Returns a random token.
   def User.new_token
     SecureRandom.urlsafe_base64
   end
@@ -36,5 +37,10 @@ class User < ActiveRecord::Base
   # Forgets a user.
   def forget
     update_attribute(:remember_digest, nil)
+  end
+
+  # Defines a proto-feed.
+  def feed
+    Micropost.where("user_id = ?", id)
   end
 end
